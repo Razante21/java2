@@ -25,23 +25,26 @@ export default function Home() {
         }
     };
 
+    // Nova função para lidar com a tecla Enter
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault(); // Impede a ação padrão (como descer para o próximo campo)
+            handleSearch(); // Chama a função de busca
+        }
+    };
+
     return (
         <div className="container">
             <header>
                 <h1>Buscador de Produtos do Mercado Livre</h1>
             </header>
-            <form 
-                onSubmit={(e) => { 
-                    e.preventDefault(); 
-                    handleSearch(); 
-                }} 
-                className="search-form"
-            >
+            <form onSubmit={(e) => { e.preventDefault(); handleSearch(); }} className="search-form">
                 <input
                     type="text"
                     placeholder="Digite o nome do produto"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
+                    onKeyPress={handleKeyPress} // Adiciona o manipulador de tecla
                     className="search-input"
                 />
                 <select value={sort} onChange={(e) => setSort(e.target.value)} className="sort-select">
