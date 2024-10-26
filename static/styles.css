@@ -82,12 +82,11 @@ button:hover {
 }
 
 .results {
-  background: rgba(255, 255, 255, 0.1);
+  background: #2a2a2a; /* Fundo sólido para a seção de resultados */
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
   margin-top: 20px;
-  backdrop-filter: blur(8px);
 }
 
 .results ul {
@@ -100,7 +99,7 @@ button:hover {
 }
 
 .results li {
-  background: rgba(255, 255, 255, 0.1);
+  background: #1f1f1f; /* Cor sólida de fundo cinza escuro */
   border: 1px solid #333;
   border-radius: 8px;
   padding: 15px;
@@ -113,7 +112,7 @@ button:hover {
 }
 
 .results li:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: #333333; /* Cor um pouco mais clara ao passar o mouse */
   box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
   transform: translateY(-5px);
 }
