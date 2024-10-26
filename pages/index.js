@@ -30,7 +30,13 @@ export default function Home() {
             <header>
                 <h1>Buscador de Produtos do Mercado Livre</h1>
             </header>
-            <form onSubmit={(e) => { e.preventDefault(); handleSearch(); }} className="search-form">
+            <form 
+                onSubmit={(e) => { 
+                    e.preventDefault(); 
+                    handleSearch(); 
+                }} 
+                className="search-form"
+            >
                 <input
                     type="text"
                     placeholder="Digite o nome do produto"
@@ -114,7 +120,7 @@ export default function Home() {
                     border: 1px solid #333;
                     border-radius: 8px;
                     padding: 10px;
-                    width: calc(20% - 15px);
+                    width: calc(20% - 15px); /* 5 produtos em telas grandes */
                     display: flex;
                     flex-direction: column;
                     align-items: center;
@@ -158,7 +164,7 @@ export default function Home() {
                         width: auto; /* Remove o limite de 100% em desktops */
                     }
                     .product {
-                        width: calc(20% - 15px); /* 5 produtos em desktops */
+                        width: calc(19.5% - 15px); /* Ajusta a largura para caber 5 produtos em desktops */
                     }
                 }
 
