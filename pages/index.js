@@ -121,15 +121,25 @@ export default function Home() {
                     padding: 15px;
                     border-radius: 10px;
                     background-color: #fff;
-                    transition: box-shadow 0.3s ease;
+                    transition: transform 0.3s ease, box-shadow 0.3s ease;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                }
+                .product:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
                 }
                 .product img {
                     max-width: 100%;
                     border-radius: 5px;
+                    margin-bottom: 10px;
                 }
                 .product h3 {
                     font-size: 1.2em;
                     color: #333;
+                    margin: 10px 0;
                 }
                 .product p {
                     font-size: 1em;
