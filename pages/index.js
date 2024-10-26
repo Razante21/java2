@@ -30,7 +30,7 @@ export default function Home() {
             <header>
                 <h1>Buscador de Produtos do Mercado Livre</h1>
             </header>
-            <form onSubmit={(e) => { e.preventDefault(); handleSearch(); }}>
+            <form onSubmit={(e) => { e.preventDefault(); handleSearch(); }} className="search-form">
                 <input
                     type="text"
                     placeholder="Digite o nome do produto"
@@ -91,15 +91,15 @@ export default function Home() {
                     color: #e0e0e0;
                     margin: 0;
                 }
-                form {
+                .search-form {
                     display: flex;
-                    flex-direction: column; /* Coloca os elementos um abaixo do outro */
+                    flex-direction: column; /* Alinha elementos em coluna para dispositivos móveis */
                     gap: 10px;
                     margin: 20px 0;
                 }
                 .search-input, .sort-select, .search-button {
                     width: 100%; /* Faz os elementos ocuparem 100% da largura */
-                    max-width: 300px; /* Limita a largura máxima para telas grandes */
+                    max-width: 300px; /* Limita a largura máxima */
                 }
                 .results {
                     margin-top: 20px;
@@ -150,15 +150,15 @@ export default function Home() {
                 }
 
                 /* Media Queries */
-                @media (max-width: 1200px) {
-                    .product {
-                        width: calc(25% - 15px); /* 4 produtos em telas médias */
+                @media (min-width: 601px) {
+                    .search-form {
+                        flex-direction: row; /* Alinha elementos em linha para desktops */
                     }
-                }
-
-                @media (max-width: 900px) {
+                    .search-input, .sort-select, .search-button {
+                        width: auto; /* Remove o limite de 100% em desktops */
+                    }
                     .product {
-                        width: calc(33.33% - 15px); /* 3 produtos em telas menores */
+                        width: calc(20% - 15px); /* 5 produtos em desktops */
                     }
                 }
 
