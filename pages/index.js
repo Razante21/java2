@@ -7,6 +7,7 @@ export default function Home() {
     const [products, setProducts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
+    const [error, setError] = useState('');
 
     const handleSearch = async (page = 1) => {
         try {
@@ -17,15 +18,19 @@ export default function Home() {
             setProducts(response.data.products);
             setTotalPages(response.data.totalPages);
             setCurrentPage(page);
+            setError('');
         } catch (error) {
             console.error('Erro ao buscar produtos:', error);
+            setError('Erro ao buscar produtos. Tente novamente.');
         }
     };
 
     return (
         <div className="container">
-            <h1>Buscador de Produtos do Mercado Livre</h1>
-            <div className="search-form">
+            <header>
+                <h1>Buscador de Produtos do Mercado Livre</h1>
+            </header>
+            <form onSubmit={(e) => { e.preventDefault(); handleSearch(); }}>
                 <input
                     type="text"
                     placeholder="Digite o nome do produto"
@@ -37,20 +42,26 @@ export default function Home() {
                     <option value="price_asc">Menor Preço</option>
                     <option value="price_desc">Maior Preço</option>
                 </select>
-                <button onClick={() => handleSearch()}>Buscar</button>
-            </div>
+                <button type="submit">Buscar</button>
+            </form>
+
+            {error && <div className="error">{error}</div>}
 
             <div className="results">
-                {products.map((product, index) => (
-                    <div key={index} className="product">
-                        <img src={product.image} alt={product.title} />
-                        <h3>{product.title}</h3>
-                        <p>R$ {product.price}</p>
-                        <a href={product.link} target="_blank" rel="noopener noreferrer">
-                            Ver Produto
-                        </a>
-                    </div>
-                ))}
+                <ul>
+                    {products.map((product, index) => (
+                        <li key={index} className="product">
+                            <img src={product.image} alt={product.title} />
+                            <div className="product-info">
+                                <h3>{product.title}</h3>
+                                <p className="product-price">R$ {product.price}</p>
+                                <a href={product.link} target="_blank" rel="noopener noreferrer">
+                                    Ver Produto
+                                </a>
+                            </div>
+                        </li>
+                    ))}
+                </ul>
             </div>
 
             <div className="pagination">
@@ -70,100 +81,67 @@ export default function Home() {
             <style jsx>{`
                 .container {
                     padding: 20px;
-                    color: #f5f5f5;
-                    font-family: Arial, sans-serif;
+                }
+                header {
                     text-align: center;
-                    max-width: 900px;
-                    margin: auto;
+                    margin-bottom: 20px;
                 }
                 h1 {
-                    font-size: 2em;
-                    color: #fff;
-                    background: linear-gradient(45deg, #00bfff, #a020f0);
-                    padding: 10px;
-                    border-radius: 10px;
-                    margin-bottom: 20px;
+                    color: #e0e0e0;
+                    margin: 0;
                 }
-                .search-form {
+                form {
                     display: flex;
+                    justify-content: center;
                     gap: 10px;
-                    margin-bottom: 20px;
-                }
-                input, select, button {
-                    padding: 10px;
-                    font-size: 1em;
-                    border-radius: 5px;
-                    border: none;
-                }
-                input {
-                    flex: 1;
-                }
-                select {
-                    flex: 0.5;
-                }
-                button {
-                    background-color: #6200ea;
-                    color: #fff;
-                    cursor: pointer;
-                    transition: background 0.3s;
-                }
-                button:hover {
-                    background-color: #3700b3;
+                    margin: 20px 0;
                 }
                 .results {
-                    display: grid;
-                    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                    margin-top: 20px;
+                }
+                .results ul {
+                    display: flex;
+                    flex-wrap: wrap;
                     gap: 20px;
-                    color: #333;
+                    justify-content: center;
                 }
                 .product {
+                    background: rgba(255, 255, 255, 0.1);
                     border: 1px solid #333;
+                    border-radius: 8px;
                     padding: 15px;
-                    border-radius: 10px;
-                    background-color: #fff;
-                    transition: box-shadow 0.3s ease;
+                    width: 280px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+                    transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
                 }
                 .product img {
-                    max-width: 100%;
-                    border-radius: 5px;
+                    border-radius: 6px;
+                    margin-bottom: 10px;
+                    width: 100%;
+                    height: 180px;
+                    object-fit: cover;
                 }
-                .product h3 {
-                    font-size: 1.2em;
-                    color: #333;
+                .product-info {
+                    text-align: center;
+                    color: #e0e0e0;
                 }
-                .product p {
-                    font-size: 1em;
-                    color: #888;
-                }
-                .product a {
-                    display: inline-block;
+                .product-price {
+                    font-weight: bold;
+                    color: #00e5ff;
                     margin-top: 10px;
-                    padding: 5px 10px;
-                    background-color: #00bfff;
-                    color: #fff;
-                    border-radius: 5px;
-                    text-decoration: none;
-                    transition: background 0.3s;
-                }
-                .product a:hover {
-                    background-color: #0094cc;
                 }
                 .pagination {
                     display: flex;
-                    justify-content: space-between;
-                    margin-top: 20px;
-                    color: #fff;
+                    justify-content: center;
+                    align-items: center;
+                    margin: 20px 0;
                 }
-                .pagination button {
-                    background-color: #6200ea;
-                    color: #fff;
-                    padding: 10px;
-                    border-radius: 5px;
-                    cursor: pointer;
-                    transition: background 0.3s;
-                }
-                .pagination button:hover {
-                    background-color: #3700b3;
+                .pagination span {
+                    margin: 0 10px;
+                    color: #e0e0e0;
                 }
             `}</style>
         </div>
