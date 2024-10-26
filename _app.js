@@ -1,5 +1,6 @@
-// pages/_app.js
-import '../static/styles.css'; // Altere o caminho se necessário
+// _app.js
+import '../estilu/global.css';
+import '../static/styles.css';
 
 function MyApp({ Component, pageProps }) {
     return <Component {...pageProps} />;
