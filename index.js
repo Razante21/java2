@@ -1,101 +1,97 @@
-const express = require('express');
-const app = express();
-const path = require('path');
+import { useState } from 'react';
+import axios from 'axios';
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static('static'));
+export default function Home() {
+    const [query, setQuery] = useState('');
+    const [sort, setSort] = useState('relevance');
+    const [products, setProducts] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(0);
 
-app.set('view engine', 'ejs'); // Definindo o EJS como motor de visualização
+    const handleSearch = async (page = 1) => {
+        try {
+            const offset = (page - 1) * 10;
+            const response = await axios.get(/api/search, {
+                params: { query, sort, offset },
+            });
+            setProducts(response.data.products);
+            setTotalPages(response.data.totalPages);
+            setCurrentPage(page);
+        } catch (error) {
+            console.error('Erro ao buscar produtos:', error);
+        }
+    };
 
-app.get('/', (req, res) => {
-    res.render('index', { query: '', sort: '', search_results: [], error_message: null, current_page: 1, total_pages: 1 });
-});
-
-app.post('/', (req, res) => {
-    // Lógica de busca de produtos aqui
-
-    const { query, sort, page } = req.body;
-    // Aqui você deve implementar a lógica para buscar os produtos usando a API do Mercado Livre.
-    // Exemplo de retorno:
-    const search_results = []; // Insira os resultados aqui.
-    const error_message = null; // Mensagem de erro, se houver.
-    const current_page = page || 1; // Página atual
-    const total_pages = 5; // Total de páginas (atualize conforme necessário)
-
-    res.render('index', { query, sort, search_results, error_message, current_page, total_pages });
-});
-
-// Serve o HTML junto com o CSS
-const html = `
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Busca de Produtos</title>
-    <link rel="stylesheet" href="static/style.css">
-</head>
-<body>
-    <div class="container">
-        <header>
+    return (
+        <div className="container">
             <h1>Buscador de Produtos do Mercado Livre</h1>
-        </header>
+            <div className="search-form">
+                <input
+                    type="text"
+                    placeholder="Digite o nome do produto"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                />
+                <select value={sort} onChange={(e) => setSort(e.target.value)}>
+                    <option value="relevance">Mais Vendidos</option>
+                    <option value="price_asc">Menor Preço</option>
+                    <option value="price_desc">Maior Preço</option>
+                </select>
+                <button onClick={() => handleSearch()}>Buscar</button>
+            </div>
 
-        <form method="POST" action="/" class="search-form">
-            <input type="text" name="query" placeholder="Digite o nome do produto" required value="{{ query }}">
-            <select name="sort">
-                <option value="sold_quantity" {% if sort == 'sold_quantity' %}selected{% endif %}>Mais Vendidos</option>
-                <option value="price_asc" {% if sort == 'price_asc' %}selected{% endif %}>Menor Preço</option>
-                <option value="price_desc" {% if sort == 'price_desc' %}selected{% endif %}>Maior Preço</option>
-            </select>
-            <button type="submit">Buscar</button>
-        </form>
+            <div className="results">
+                {products.map((product, index) => (
+                    <div key={index} className="product">
+                        <img src={product.image} alt={product.title} />
+                        <h3>{product.title}</h3>
+                        <p>R$ {product.price}</p>
+                        <a href={product.link} target="_blank" rel="noopener noreferrer">
+                            Ver Produto
+                        </a>
+                    </div>
+                ))}
+            </div>
 
-        {% if error_message %}
-            <div class="error">{{ error_message }}</div>
-        {% endif %}
+            <div className="pagination">
+                {currentPage > 1 && (
+                    <button onClick={() => handleSearch(currentPage - 1)}>
+                        Página Anterior
+                    </button>
+                )}
+                <span>Página {currentPage} de {totalPages}</span>
+                {currentPage < totalPages && (
+                    <button onClick={() => handleSearch(currentPage + 1)}>
+                        Próxima Página
+                    </button>
+                )}
+            </div>
 
-        <div class="results">
-            <ul>
-                {% for product in search_results %}
-                    <li>
-                        <img src="{{ product.image }}" alt="{{ product.title }}" style="width: 100%; height: auto; max-height: 300px;">
-                        <div class="product-info">
-                            <h3>{{ product.title }}</h3>
-                            <p class="product-price">R$ {{ product.price }}</p>
-                            <a href="{{ product.link }}" target="_blank">Ver Produto</a>
-                        </div>
-                    </li>
-                {% endfor %}
-            </ul>
+            <style jsx>{
+                .container {
+                    padding: 20px;
+                }
+                .search-form {
+                    display: flex;
+                    gap: 10px;
+                    margin-bottom: 20px;
+                }
+                .results {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                    gap: 20px;
+                }
+                .product {
+                    border: 1px solid #ccc;
+                    padding: 10px;
+                    text-align: center;
+                }
+                .pagination {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-top: 20px;
+                }
+            }</style>
         </div>
-
-        <div class="pagination">
-            {% if current_page > 1 %}
-                <form method="POST" action="/">
-                    <input type="hidden" name="query" value="{{ query }}">
-                    <input type="hidden" name="sort" value="{{ sort }}">
-                    <input type="hidden" name="page" value="{{ current_page - 1 }}">
-                    <button type="submit" id="prev-page">Página Anterior</button>
-                </form>
-            {% endif %}
-
-            <span id="page-info">Página {{ current_page }} de {{ total_pages }}</span>
-
-            {% if current_page < total_pages %}
-                <form method="POST" action="/">
-                    <input type="hidden" name="query" value="{{ query }}">
-                    <input type="hidden" name="sort" value="{{ sort }}">
-                    <input type="hidden" name="page" value="{{ current_page + 1 }}">
-                    <button type="submit" id="next-page">Próxima Página</button>
-                </form>
-            {% endif %}
-        </div>
-    </div>
-</body>
-</html>
-`;
-
-app.listen(3000, () => {
-    console.log('Servidor rodando na porta 3000');
-});
+    );
+}
