@@ -36,13 +36,14 @@ export default function Home() {
                     placeholder="Digite o nome do produto"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
+                    className="search-input"
                 />
-                <select value={sort} onChange={(e) => setSort(e.target.value)}>
+                <select value={sort} onChange={(e) => setSort(e.target.value)} className="sort-select">
                     <option value="relevance">Mais Vendidos</option>
                     <option value="price_asc">Menor Preço</option>
                     <option value="price_desc">Maior Preço</option>
                 </select>
-                <button type="submit">Buscar</button>
+                <button type="submit" className="search-button">Buscar</button>
             </form>
 
             {error && <div className="error">{error}</div>}
@@ -92,9 +93,13 @@ export default function Home() {
                 }
                 form {
                     display: flex;
-                    justify-content: center;
+                    flex-direction: column; /* Coloca os elementos um abaixo do outro */
                     gap: 10px;
                     margin: 20px 0;
+                }
+                .search-input, .sort-select, .search-button {
+                    width: 100%; /* Faz os elementos ocuparem 100% da largura */
+                    max-width: 300px; /* Limita a largura máxima para telas grandes */
                 }
                 .results {
                     margin-top: 20px;
