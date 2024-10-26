@@ -1,8 +1,9 @@
 // pages/_app.js
-import '@/static/styles.css'; // Altere o caminho se necessário
+import '../static/global.css'; // CSS global
+import '../static/styles.css'; // CSS específico
 
 function MyApp({ Component, pageProps }) {
-    return <Component {...pageProps} />;
+  return <Component {...pageProps} />;
 }
 
 export default MyApp;
