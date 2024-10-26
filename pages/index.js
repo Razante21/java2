@@ -102,26 +102,26 @@ export default function Home() {
                 .results ul {
                     display: flex;
                     flex-wrap: wrap;
-                    gap: 20px;
-                    justify-content: center;
+                    justify-content: space-between;
                 }
                 .product {
                     background: rgba(255, 255, 255, 0.1);
                     border: 1px solid #333;
                     border-radius: 8px;
                     padding: 10px;
-                    width: 180px; /* Reduzido para caber 5 itens em uma linha */
+                    width: calc(20% - 15px);
                     display: flex;
                     flex-direction: column;
                     align-items: center;
                     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
                     transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
+                    margin-bottom: 20px;
                 }
                 .product img {
                     border-radius: 6px;
                     margin-bottom: 10px;
                     width: 100%;
-                    height: 120px; /* Ajustado para manter uma boa proporção */
+                    height: 120px;
                     object-fit: cover;
                 }
                 .product-info {
@@ -142,6 +142,31 @@ export default function Home() {
                 .pagination span {
                     margin: 0 10px;
                     color: #e0e0e0;
+                }
+
+                /* Media Queries */
+                @media (max-width: 1200px) {
+                    .product {
+                        width: calc(25% - 15px); /* 4 produtos em telas médias */
+                    }
+                }
+
+                @media (max-width: 900px) {
+                    .product {
+                        width: calc(33.33% - 15px); /* 3 produtos em telas menores */
+                    }
+                }
+
+                @media (max-width: 600px) {
+                    .product {
+                        width: calc(50% - 15px); /* 2 produtos em telas pequenas */
+                    }
+                }
+
+                @media (max-width: 400px) {
+                    .product {
+                        width: 100%; /* 1 produto por linha em telas muito pequenas */
+                    }
                 }
             `}</style>
         </div>
