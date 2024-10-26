@@ -109,8 +109,8 @@ export default function Home() {
                     background: rgba(255, 255, 255, 0.1);
                     border: 1px solid #333;
                     border-radius: 8px;
-                    padding: 15px;
-                    width: 280px;
+                    padding: 10px; /* Reduzido para diminuir o quadrado */
+                    width: 220px; /* Reduzido para diminuir o quadrado */
                     display: flex;
                     flex-direction: column;
                     align-items: center;
@@ -121,7 +121,7 @@ export default function Home() {
                     border-radius: 6px;
                     margin-bottom: 10px;
                     width: 100%;
-                    height: 180px;
+                    height: 140px; /* Reduzido para diminuir o quadrado */
                     object-fit: cover;
                 }
                 .product-info {
