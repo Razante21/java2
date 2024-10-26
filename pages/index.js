@@ -25,10 +25,9 @@ export default function Home() {
         }
     };
 
-    // Nova função para lidar com a tecla Enter
     const handleKeyPress = (e) => {
         if (e.key === 'Enter') {
-            e.preventDefault(); // Impede a ação padrão (como descer para o próximo campo)
+            e.preventDefault(); // Impede o comportamento padrão
             handleSearch(); // Chama a função de busca
         }
     };
@@ -38,7 +37,13 @@ export default function Home() {
             <header>
                 <h1>Buscador de Produtos do Mercado Livre</h1>
             </header>
-            <form onSubmit={(e) => { e.preventDefault(); handleSearch(); }} className="search-form">
+            <form 
+                onSubmit={(e) => { 
+                    e.preventDefault(); 
+                    handleSearch(); 
+                }} 
+                className="search-form"
+            >
                 <input
                     type="text"
                     placeholder="Digite o nome do produto"
