@@ -1,8 +1,7 @@
 {
   "name": "ml-search",
   "version": "1.0.0",
-  "main": "index.html",
-  "scripts": {
+    "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start"
